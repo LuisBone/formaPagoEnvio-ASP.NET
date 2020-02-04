@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AsociacionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Categorias">
+    <Key>
+      <PropertyRef Name="IdCategoria" />
+    </Key>
+    <Property Name="IdCategoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreCategoria" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Productos" Relationship="Self.FK_Productos_Categorias" FromRole="Categorias" ToRole="Productos" />
+  </EntityType>
+  <EntityType Name="DetallesOrdenes">
+    <Key>
+      <PropertyRef Name="IdDetalleOrden" />
+    </Key>
+    <Property Name="IdDetalleOrden" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdOrden" Type="Int32" Nullable="false" />
+    <Property Name="IdProducto" Type="Int32" Nullable="false" />
+    <Property Name="Precio" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Cantidad" Type="Int16" Nullable="false" />
+    <NavigationProperty Name="Ordenes" Relationship="Self.FK_Ordenes_DetallesOrdenes" FromRole="DetallesOrdenes" ToRole="Ordenes" />
+    <NavigationProperty Name="Productos" Relationship="Self.FK_Productos_DetallesOrdenes" FromRole="DetallesOrdenes" ToRole="Productos" />
+  </EntityType>
+  <EntityType Name="FormasEnvio">
+    <Key>
+      <PropertyRef Name="IdEnvio" />
+    </Key>
+    <Property Name="IdEnvio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FormaEnvio" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+    <Property Name="Precio" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <NavigationProperty Name="Ordenes" Relationship="Self.FK_FormasEnvio_Ordenes" FromRole="FormasEnvio" ToRole="Ordenes" />
+  </EntityType>
+  <EntityType Name="FormasPago">
+    <Key>
+      <PropertyRef Name="IdPago" />
+    </Key>
+    <Property Name="IdPago" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FormaPago" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="Ordenes" Relationship="Self.FK_FormasPago_Ordenes" FromRole="FormasPago" ToRole="Ordenes" />
+  </EntityType>
+  <EntityType Name="Ordenes">
+    <Key>
+      <PropertyRef Name="IdOrden" />
+    </Key>
+    <Property Name="IdOrden" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdUsuario" Type="Int32" Nullable="false" />
+    <Property Name="IdEnvio" Type="Int32" Nullable="false" />
+    <Property Name="IdPago" Type="Int32" Nullable="false" />
+    <Property Name="IdNoConcretadas" Type="Int32" Nullable="false" />
+    <Property Name="FechaOrden" Type="DateTime" Precision="0" />
+    <Property Name="TiempoExpiracion" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Estado" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Saldo" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <NavigationProperty Name="DetallesOrdenes" Relationship="Self.FK_Ordenes_DetallesOrdenes" FromRole="Ordenes" ToRole="DetallesOrdenes" />
+    <NavigationProperty Name="FormasEnvio" Relationship="Self.FK_FormasEnvio_Ordenes" FromRole="Ordenes" ToRole="FormasEnvio" />
+    <NavigationProperty Name="FormasPago" Relationship="Self.FK_FormasPago_Ordenes" FromRole="Ordenes" ToRole="FormasPago" />
+    <NavigationProperty Name="OrdenesNoConcretadas" Relationship="Self.FK_OrdenesNoConcretadas_Ordenes" FromRole="Ordenes" ToRole="OrdenesNoConcretadas" />
+    <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuarios_Ordenes" FromRole="Ordenes" ToRole="Usuarios" />
+  </EntityType>
+  <EntityType Name="OrdenesNoConcretadas">
+    <Key>
+      <PropertyRef Name="IdNoConcretadas" />
+    </Key>
+    <Property Name="IdNoConcretadas" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Causa" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Ordenes" Relationship="Self.FK_OrdenesNoConcretadas_Ordenes" FromRole="OrdenesNoConcretadas" ToRole="Ordenes" />
+  </EntityType>
+  <EntityType Name="Productos">
+    <Key>
+      <PropertyRef Name="IdProducto" />
+    </Key>
+    <Property Name="IdProducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreProducto" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IdCategoria" Type="Int32" Nullable="false" />
+    <Property Name="Precio" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Stock" Type="Int16" />
+    <Property Name="Imagen" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Peso" Type="Double" Nullable="false" />
+    <NavigationProperty Name="Categorias" Relationship="Self.FK_Productos_Categorias" FromRole="Productos" ToRole="Categorias" />
+    <NavigationProperty Name="DetallesOrdenes" Relationship="Self.FK_Productos_DetallesOrdenes" FromRole="Productos" ToRole="DetallesOrdenes" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="IdRol" />
+    </Key>
+    <Property Name="IdRol" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreRol" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Roles_Usuarios" Relationship="Self.FK_Roles_Roles_Usuarios" FromRole="Roles" ToRole="Roles_Usuarios" />
+  </EntityType>
+  <EntityType Name="Roles_Usuarios">
+    <Key>
+      <PropertyRef Name="IdRol_Usuario" />
+    </Key>
+    <Property Name="IdRol_Usuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdUsuario" Type="Int32" Nullable="false" />
+    <Property Name="IdRol" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Roles" Relationship="Self.FK_Roles_Roles_Usuarios" FromRole="Roles_Usuarios" ToRole="Roles" />
+    <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuario_Roles_Usuarios" FromRole="Roles_Usuarios" ToRole="Usuarios" />
+  </EntityType>
+  <EntityType Name="Usuarios">
+    <Key>
+      <PropertyRef Name="IdUsuario" />
+    </Key>
+    <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreUsuario" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ApellidoUsuario" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Cedula" Type="String" MaxLength="13" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Empresa" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Direccion" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+    <Property Name="Ciudad" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="Provincia" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="Telefono" Type="String" MaxLength="24" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Ordenes" Relationship="Self.FK_Usuarios_Ordenes" FromRole="Usuarios" ToRole="Ordenes" />
+    <NavigationProperty Name="Roles_Usuarios" Relationship="Self.FK_Usuario_Roles_Usuarios" FromRole="Usuarios" ToRole="Roles_Usuarios" />
+  </EntityType>
+  <Association Name="FK_Productos_Categorias">
+    <End Role="Categorias" Type="Self.Categorias" Multiplicity="1" />
+    <End Role="Productos" Type="Self.Productos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categorias">
+        <PropertyRef Name="IdCategoria" />
+      </Principal>
+      <Dependent Role="Productos">
+        <PropertyRef Name="IdCategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ordenes_DetallesOrdenes">
+    <End Role="Ordenes" Type="Self.Ordenes" Multiplicity="1" />
+    <End Role="DetallesOrdenes" Type="Self.DetallesOrdenes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ordenes">
+        <PropertyRef Name="IdOrden" />
+      </Principal>
+      <Dependent Role="DetallesOrdenes">
+        <PropertyRef Name="IdOrden" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Productos_DetallesOrdenes">
+    <End Role="Productos" Type="Self.Productos" Multiplicity="1" />
+    <End Role="DetallesOrdenes" Type="Self.DetallesOrdenes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Productos">
+        <PropertyRef Name="IdProducto" />
+      </Principal>
+      <Dependent Role="DetallesOrdenes">
+        <PropertyRef Name="IdProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FormasEnvio_Ordenes">
+    <End Role="FormasEnvio" Type="Self.FormasEnvio" Multiplicity="1" />
+    <End Role="Ordenes" Type="Self.Ordenes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FormasEnvio">
+        <PropertyRef Name="IdEnvio" />
+      </Principal>
+      <Dependent Role="Ordenes">
+        <PropertyRef Name="IdEnvio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FormasPago_Ordenes">
+    <End Role="FormasPago" Type="Self.FormasPago" Multiplicity="1" />
+    <End Role="Ordenes" Type="Self.Ordenes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FormasPago">
+        <PropertyRef Name="IdPago" />
+      </Principal>
+      <Dependent Role="Ordenes">
+        <PropertyRef Name="IdPago" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrdenesNoConcretadas_Ordenes">
+    <End Role="OrdenesNoConcretadas" Type="Self.OrdenesNoConcretadas" Multiplicity="1" />
+    <End Role="Ordenes" Type="Self.Ordenes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrdenesNoConcretadas">
+        <PropertyRef Name="IdNoConcretadas" />
+      </Principal>
+      <Dependent Role="Ordenes">
+        <PropertyRef Name="IdNoConcretadas" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Usuarios_Ordenes">
+    <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+    <End Role="Ordenes" Type="Self.Ordenes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuarios">
+        <PropertyRef Name="IdUsuario" />
+      </Principal>
+      <Dependent Role="Ordenes">
+        <PropertyRef Name="IdUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Roles_Roles_Usuarios">
+    <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+    <End Role="Roles_Usuarios" Type="Self.Roles_Usuarios" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="IdRol" />
+      </Principal>
+      <Dependent Role="Roles_Usuarios">
+        <PropertyRef Name="IdRol" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Usuario_Roles_Usuarios">
+    <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+    <End Role="Roles_Usuarios" Type="Self.Roles_Usuarios" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuarios">
+        <PropertyRef Name="IdUsuario" />
+      </Principal>
+      <Dependent Role="Roles_Usuarios">
+        <PropertyRef Name="IdUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AsociacionEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Categorias" EntityType="Self.Categorias" />
+    <EntitySet Name="DetallesOrdenes" EntityType="Self.DetallesOrdenes" />
+    <EntitySet Name="FormasEnvio" EntityType="Self.FormasEnvio" />
+    <EntitySet Name="FormasPago" EntityType="Self.FormasPago" />
+    <EntitySet Name="Ordenes" EntityType="Self.Ordenes" />
+    <EntitySet Name="OrdenesNoConcretadas" EntityType="Self.OrdenesNoConcretadas" />
+    <EntitySet Name="Productos" EntityType="Self.Productos" />
+    <EntitySet Name="Roles" EntityType="Self.Roles" />
+    <EntitySet Name="Roles_Usuarios" EntityType="Self.Roles_Usuarios" />
+    <EntitySet Name="Usuarios" EntityType="Self.Usuarios" />
+    <AssociationSet Name="FK_Productos_Categorias" Association="Self.FK_Productos_Categorias">
+      <End Role="Categorias" EntitySet="Categorias" />
+      <End Role="Productos" EntitySet="Productos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ordenes_DetallesOrdenes" Association="Self.FK_Ordenes_DetallesOrdenes">
+      <End Role="Ordenes" EntitySet="Ordenes" />
+      <End Role="DetallesOrdenes" EntitySet="DetallesOrdenes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Productos_DetallesOrdenes" Association="Self.FK_Productos_DetallesOrdenes">
+      <End Role="Productos" EntitySet="Productos" />
+      <End Role="DetallesOrdenes" EntitySet="DetallesOrdenes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FormasEnvio_Ordenes" Association="Self.FK_FormasEnvio_Ordenes">
+      <End Role="FormasEnvio" EntitySet="FormasEnvio" />
+      <End Role="Ordenes" EntitySet="Ordenes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FormasPago_Ordenes" Association="Self.FK_FormasPago_Ordenes">
+      <End Role="FormasPago" EntitySet="FormasPago" />
+      <End Role="Ordenes" EntitySet="Ordenes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrdenesNoConcretadas_Ordenes" Association="Self.FK_OrdenesNoConcretadas_Ordenes">
+      <End Role="OrdenesNoConcretadas" EntitySet="OrdenesNoConcretadas" />
+      <End Role="Ordenes" EntitySet="Ordenes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Usuarios_Ordenes" Association="Self.FK_Usuarios_Ordenes">
+      <End Role="Usuarios" EntitySet="Usuarios" />
+      <End Role="Ordenes" EntitySet="Ordenes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Roles_Roles_Usuarios" Association="Self.FK_Roles_Roles_Usuarios">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Roles_Usuarios" EntitySet="Roles_Usuarios" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Usuario_Roles_Usuarios" Association="Self.FK_Usuario_Roles_Usuarios">
+      <End Role="Usuarios" EntitySet="Usuarios" />
+      <End Role="Roles_Usuarios" EntitySet="Roles_Usuarios" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
